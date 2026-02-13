@@ -1,2 +1,3 @@
-# family-memories-sharing-app-internet-identity-memory-timeline_1
-Exported from Caffeine project: Family Memories Sharing App (Internet Identity + Memory Timeline)
+## Family Memories Sharing App (Internet Identity + Memory Timeline)
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

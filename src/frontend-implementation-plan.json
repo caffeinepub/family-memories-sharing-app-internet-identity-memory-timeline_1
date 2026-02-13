@@ -1,0 +1,221 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Family Memories Sharing App (Internet Identity + Memory Timeline) — Frontend Plan",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Provide an authenticated UI that lets signed-in users add and browse shared memories via the existing canister actor.",
+      "acceptanceCriteria": [
+        "Users can sign in with Internet Identity and see that they are authenticated in the UI.",
+        "Authenticated users can create a new memory entry and it is persisted in the Motoko canister.",
+        "All authenticated users can browse the list of memories created by any authenticated user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell that (a) shows a signed-out landing state vs signed-in memories UI using the existing Internet Identity hook, and (b) wires navigation between memories list, memory detail (dialog/page), and add/edit form. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMemories.ts",
+          "operation": "create",
+          "description": "Add React Query hooks that call the existing actor methods (createMemory/getAllMemories/getMemory/updateMemory/deleteMemory) via useActor, providing cached list/detail fetching and mutations with invalidation. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoriesPage.tsx",
+          "operation": "create",
+          "description": "Implement the signed-in Memories page that uses the React Query hooks to load and render the shared list, including loading and error states. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryForm.tsx",
+          "operation": "create",
+          "description": "Implement the Add/Edit Memory form UI that submits create/update mutations through React Query and refreshes the list on success. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Support an optional photo upload per memory with clear client-side validation and display previews in list and detail views.",
+      "acceptanceCriteria": [
+        "Memory creation UI accepts an optional image upload and validates type (PNG/JPEG/WebP) and max size limit (define and display the limit in the UI).",
+        "Backend stores the image bytes (or a structured representation) associated with the memory and returns it for display.",
+        "Memory list shows a thumbnail/preview when a photo exists; memory detail shows the full photo.",
+        "If an image exceeds limits or is an unsupported type, the UI shows an English validation error and does not submit."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/memories/MemoryForm.tsx",
+          "operation": "modify",
+          "description": "Add optional photo file input with client-side validation (PNG/JPEG/WebP + max size), show the limit in the UI, convert accepted files to bytes for submission, and block submission with English validation errors when invalid. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryCard.tsx",
+          "operation": "create",
+          "description": "Render a memory card/list item with a small thumbnail preview when a photo exists (generated from returned bytes) and consistent fallback when not present. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryDetail.tsx",
+          "operation": "create",
+          "description": "Render the memory detail view/dialog including the full-size photo when present, and show appropriate loading/error states when fetching a single memory. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/photo.ts",
+          "operation": "create",
+          "description": "Add utilities to validate image MIME/size, convert File -> Uint8Array for submission, and convert Uint8Array -> browser-displayable URL (with cleanup) for thumbnails/full photo rendering. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMemories.ts",
+          "operation": "modify",
+          "description": "Ensure create/update mutations accept an optional photo payload (bytes or null), and list/detail queries expose photo presence for the UI to conditionally render thumbnails/full photo. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/blobStorage.ts",
+          "operation": "create",
+          "description": "Integrate the selected blob-storage component’s frontend ExternalBlob helper as an optional adapter layer (e.g., for future direct URL display/progress), without changing public routing; keep the default path working with raw bytes from the canister. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Build the core UX: memories timeline/grid list, memory detail view, and add/edit form with search/filter plus loading/error states.",
+      "acceptanceCriteria": [
+        "App has at minimum: (1) Memories page (timeline or grid), (2) Memory detail page/modal, (3) Add/Edit Memory form.",
+        "List view supports basic client-side search or filtering by title/tags/year (at least one of these).",
+        "UI clearly indicates loading and error states for all canister calls (React Query).",
+        "User-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/memories/MemoriesPage.tsx",
+          "operation": "modify",
+          "description": "Add client-side filtering (at least one: title/content search and/or year filter derived from timestamp), render timeline/grid layout, and ensure explicit loading and error UI for list query. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryDetail.tsx",
+          "operation": "modify",
+          "description": "Add detail view layout, including title/content/author/timestamp display and loading/error UI for detail fetch; support opening from list selection. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryForm.tsx",
+          "operation": "modify",
+          "description": "Ensure the form supports both create and edit modes (pre-filled values for edit), displays mutation pending/error states, and uses English labels/help text. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoriesLayout.tsx",
+          "operation": "create",
+          "description": "Create a small layout component that hosts the list + actions (Add Memory button, search/filter controls) and a detail/form area (dialog or panel) to avoid adding unnecessary new routes. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Apply a warm, accessible, responsive visual theme using Tailwind + shadcn components consistently across the app.",
+      "acceptanceCriteria": [
+        "A single distinct theme is applied consistently (colors, typography, spacing, surfaces) without using a blue/purple-dominant palette.",
+        "Key surfaces (header, cards, forms, dialogs) are visually consistent and accessible (readable contrast, focus styles).",
+        "Layout works well on mobile and desktop (responsive)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Define the app theme via CSS variables used by Tailwind/shadcn (warm neutrals + non-blue/purple primary accent), set base typography/surface defaults, and ensure focus/contrast styles are accessible. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions (if needed) to support the chosen warm palette and consistent spacing/surfaces, without introducing conflicting global styles. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a responsive header using shadcn-ui building blocks (e.g., Button, Dropdown/Menu as needed) with consistent surfaces and focus styles across signed-out and signed-in states. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add signed-out onboarding UX with a clear sign-in call-to-action and signed-in sign-out option using existing Internet Identity hooks.",
+      "acceptanceCriteria": [
+        "Signed-out users see a landing screen describing the app and a Sign in button.",
+        "Signed-in users see the memories UI and a sign-out option.",
+        "Auth integration uses the existing Internet Identity hook(s) without modifying files in frontend immutablePaths."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Landing.tsx",
+          "operation": "create",
+          "description": "Implement a signed-out landing screen with brief English description and a prominent Sign in button wired to useInternetIdentity().login, plus decorative hero illustration (no backend routing). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Add auth-aware header controls: show Sign in when signed out, and show authenticated status + Sign out wired to useInternetIdentity().clear when signed in. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the landing vs memories UI conditional rendering based on Internet Identity state, ensuring immutable auth hooks are used as-is (no changes to immutablePaths). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement basic safety/moderation controls in the UI: hide/disable unauthenticated writes and author-only edit/delete actions with clear errors.",
+      "acceptanceCriteria": [
+        "Unauthenticated users cannot create/update/delete memories (backend rejects; UI hides/disables actions).",
+        "Only the author can edit/delete a memory; other users cannot see edit/delete controls for that memory.",
+        "Attempts to perform unauthorized operations show an English error message."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/memories/MemoriesPage.tsx",
+          "operation": "modify",
+          "description": "Hide/disable Add/Edit/Delete affordances when not authenticated; ensure list remains browsable when authenticated and that any rejected mutations surface English errors. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/memories/MemoryDetail.tsx",
+          "operation": "modify",
+          "description": "Show Edit/Delete controls only when the current principal matches the memory author; wire Delete to a React Query mutation and display English errors for unauthorized attempts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMemories.ts",
+          "operation": "modify",
+          "description": "Centralize mutation error handling so unauthorized errors are surfaced to the UI consistently (English messaging) and queries are invalidated/refetched appropriately after successful edits/deletes. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Add generated static brand assets under frontend/public/assets/generated and display them in the header/landing UI.",
+      "acceptanceCriteria": [
+        "Generated images are stored at frontend/public/assets/generated with the specified filenames.",
+        "The app header/landing uses the generated logo mark.",
+        "The landing page includes the generated hero illustration as a decorative visual element."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/family-memories-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated warm minimalist logo mark as a static public asset at the exact specified path and filename."
+        },
+        {
+          "path": "frontend/public/assets/generated/family-memories-hero.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated hero illustration as a static public asset at the exact specified path and filename."
+        },
+        {
+          "path": "frontend/src/components/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Render the logo image from frontend/public/assets/generated/family-memories-logo.dim_512x512.png in the header/brand area with accessible alt text. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/Landing.tsx",
+          "operation": "modify",
+          "description": "Render the hero illustration from frontend/public/assets/generated/family-memories-hero.dim_1600x900.png as a decorative visual element on the landing screen (ensure it does not require backend routing). Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "frontend/src/App.tsx": "Main application component that handles authentication state and conditionally renders Landing or MemoriesLayout based on Internet Identity login status, with a loading state and footer.",
+  "frontend/src/components/AppHeader.tsx": "Responsive header component displaying the app logo, title, and authentication controls (sign in button or account dropdown with sign out).",
+  "frontend/src/components/Landing.tsx": "Landing page for unauthenticated users featuring hero section with illustration, feature highlights, and sign-in call-to-action.",
+  "frontend/src/components/memories/MemoriesLayout.tsx": "Layout component managing the memories list view and coordinating dialogs for adding/editing memories and viewing memory details.",
+  "frontend/src/components/memories/MemoriesPage.tsx": "Memories list page with search and year filter functionality, displaying memories in a responsive grid with loading and error states.",
+  "frontend/src/components/memories/MemoryCard.tsx": "Card component displaying a memory summary with optional photo thumbnail, date, and action buttons (view and edit for authors).",
+  "frontend/src/components/memories/MemoryDetail.tsx": "Full memory detail view in a dialog showing photo, title, content, metadata, and edit/delete actions for memory authors.",
+  "frontend/src/components/memories/MemoryForm.tsx": "Form component for creating and editing memories with title, content, and optional photo upload with client-side validation (2MB limit, PNG/JPEG/WebP).",
+  "frontend/src/hooks/useMemories.ts": "React Query hooks for all memory CRUD operations (create, read, update, delete) with proper cache invalidation and error handling.",
+  "frontend/src/lib/photo.ts": "Utility functions for photo validation, file-to-bytes conversion, and blob-to-URL conversion for image display with proper TypeScript type handling for Uint8Array.",
+  "frontend/src/index.css": "Global styles with warm, family-friendly OKLCH color system for light and dark modes using earthy tones and accessible contrast.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with custom fonts, colors, shadows, and design tokens for the warm family memories aesthetic."
+}

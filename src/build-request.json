@@ -1,0 +1,174 @@
+{
+  "kind": "build_request",
+  "title": "Family Memories Sharing App (Internet Identity + Memory Timeline)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create a family memories app where authenticated users can add and browse shared memories.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-6"
+        ],
+        "quotes": [
+          "create an app for sharing family memories",
+          "create"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can sign in with Internet Identity and see that they are authenticated in the UI.",
+        "Authenticated users can create a new memory entry and it is persisted in the Motoko canister.",
+        "All authenticated users can browse the list of memories created by any authenticated user."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement backend data models and stable persistence for memories, including CRUD operations exposed via canister methods.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A Memory record includes at minimum: id, authorPrincipal, createdAt timestamp, title, date (optional), description, tags (optional).",
+        "Backend exposes methods to: createMemory, listMemories (sorted newest-first), getMemoryById, updateMemory (author-only), deleteMemory (author-only).",
+        "Data remains available after canister upgrade using stable storage patterns (add migration.mo only if required by the template’s current state handling).",
+        "All update/delete calls enforce author ownership by comparing caller principal to stored authorPrincipal."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Support an optional photo per memory: allow users to upload an image in the frontend and store/retrieve it via the backend with clear size/type limits.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Memory creation UI accepts an optional image upload and validates type (PNG/JPEG/WebP) and max size limit (define and display the limit in the UI).",
+        "Backend stores the image bytes (or a structured representation) associated with the memory and returns it for display.",
+        "Memory list shows a thumbnail/preview when a photo exists; memory detail shows the full photo.",
+        "If an image exceeds limits or is an unsupported type, the UI shows an English validation error and does not submit."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Build a frontend UX for creating, viewing, and organizing memories: timeline/gallery list, memory detail view, and an ‘Add Memory’ form.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has at minimum: (1) Memories page (timeline or grid), (2) Memory detail page/modal, (3) Add/Edit Memory form.",
+        "List view supports basic client-side search or filtering by title/tags/year (at least one of these).",
+        "UI clearly indicates loading and error states for all canister calls (React Query).",
+        "User-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Define and apply a coherent visual theme appropriate for a family memories product, using Tailwind + shadcn components, and enforce it consistently across all pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A single distinct theme is applied consistently (colors, typography, spacing, surfaces) without using a blue/purple-dominant palette.",
+        "Key surfaces (header, cards, forms, dialogs) are visually consistent and accessible (readable contrast, focus styles).",
+        "Layout works well on mobile and desktop (responsive)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Add basic onboarding UX around authentication: a landing state for signed-out users and a clear call-to-action to sign in.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Signed-out users see a landing screen describing the app and a Sign in button.",
+        "Signed-in users see the memories UI and a sign-out option.",
+        "Auth integration uses the existing Internet Identity hook(s) without modifying files in frontend immutablePaths."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Provide minimal safety and moderation controls: allow authors to edit/delete their own memories and prevent unauthenticated writes.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users cannot create/update/delete memories (backend rejects; UI hides/disables actions).",
+        "Only the author can edit/delete a memory; other users cannot see edit/delete controls for that memory.",
+        "Attempts to perform unauthorized operations show an English error message."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add generated static brand assets and display them in the UI (placed under frontend/public/assets/generated), without routing these assets through the backend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "create an app for sharing family memories"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are stored at frontend/public/assets/generated with the specified filenames.",
+        "The app header/landing uses the generated logo mark.",
+        "The landing page includes the generated hero illustration as a decorative visual element."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in backend/main.mo).",
+    "Do not edit files under frontend immutablePaths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Invites, family groups/roles, or granular access control beyond ‘any authenticated user can view; only author can edit/delete’.",
+    "Real-time updates/chat/comments/likes.",
+    "Third-party authentication providers other than Internet Identity.",
+    "External databases or non-Motoko backend services."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Warm minimalist logo mark: abstract photo frame + heart/leaf motif, flat vector style, transparent background (family-memories-logo.dim_512x512.png)",
+      "Soft illustrated hero scene: living-room wall with a photo collage, warm neutral palette, subtle grain texture (family-memories-hero.dim_1600x900.png)"
+    ],
+    "edits": []
+  }
+}

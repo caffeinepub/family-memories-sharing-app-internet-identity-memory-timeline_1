@@ -1,0 +1,85 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T08:18:35.901Z",
+  "summary": "The diff adds a Motoko backend actor with basic memory CRUD and a React/Tailwind frontend with landing/auth, a memories grid with search/year filtering, add/edit dialogs, and optional photo upload/preview. However, several required backend data fields, method names/semantics, stable persistence, and some photo/asset requirements are not evidenced in the diff summary.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Implement backend data models and stable persistence for memories, including required fields (id, authorPrincipal, createdAt, title, optional date, description, optional tags) and expose methods createMemory, listMemories (newest-first), getMemoryById, updateMemory, deleteMemory with author-only enforcement and upgrade-safe stable storage.",
+      "reason": "Backend model/methods in the diff do not match required fields or method names, sorting is not newest-first, and no stable storage patterns (stable vars / preupgrade/postupgrade) are shown. Also required optional fields (date, tags) are absent and the record uses different names (content/timestamp/author).",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Support an optional photo per memory with clear size/type limits, backend storage/retrieval for display, and UI validation that displays the limit and blocks submission on invalid files.",
+      "reason": "Frontend validates type/size, but the UI evidence is truncated so it’s not clear the max size limit is displayed to the user. Backend does not show any explicit size/type enforcement for stored photos (requirement asks for clear limits). Additionally, backend uses Storage.ExternalBlob for photo while frontend sends Uint8Array bytes; the end-to-end storage/retrieval contract is not clearly implemented in the diff summary.",
+      "evidence": [
+        "frontend/src/components/memories/MemoryForm.tsx",
+        "frontend/src/lib/photo.ts",
+        "backend/main.mo",
+        "frontend/src/hooks/useMemories.ts"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Prevent unauthenticated writes (backend rejects create/update/delete; UI hides/disables actions for unauthenticated users) and show English errors on unauthorized attempts.",
+      "reason": "Backend does not check for anonymous principal on create/update/delete; it only checks ownership for update/delete. If anonymous calls are possible, unauthenticated writes are not explicitly rejected. UI gating for unauthenticated writes is only indirect (authenticated users see memories UI), but backend rejection is explicitly required.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Add generated static brand assets under frontend/public/assets/generated with specified filenames and use them in header/landing without routing through backend.",
+      "reason": "UI references the required asset paths, but the actual generated image files are not present in the diff summary (and one added file is omitted). Without evidence of the files under frontend/public/assets/generated, this requirement cannot be confirmed as implemented.",
+      "evidence": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/components/Landing.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Footer includes a promotional link/attribution to caffeine.ai with UTM parameters.",
+      "reason": "Not requested in the BuildRequest requirements or acceptance criteria.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "Backend integrates a blob-storage Mixin/Storage module (ExternalBlob) rather than a simple bytes field, without this being requested explicitly.",
+      "reason": "The request only specifies storing image bytes (or structured representation) with clear limits; adopting a specific blob-storage mixin is an unrequested implementation detail and may exceed the spec as written.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppHeader.tsx",
+    "frontend/src/components/Landing.tsx",
+    "frontend/src/components/memories/MemoriesLayout.tsx",
+    "frontend/src/components/memories/MemoriesPage.tsx",
+    "frontend/src/components/memories/MemoryCard.tsx",
+    "frontend/src/components/memories/MemoryDetail.tsx",
+    "frontend/src/components/memories/MemoryForm.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useMemories.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/photo.ts",
+    "frontend/src/main.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

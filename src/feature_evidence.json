@@ -1,0 +1,155 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-family-memories-app-where-authenticated-users-can-add-and-browse-shared-memories",
+      "featureTitle": "Create a family memories app where authenticated users can add and browse shared memories.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/memories/MemoriesPage.tsx",
+        "frontend/src/components/memories/MemoryForm.tsx",
+        "frontend/src/hooks/useMemories.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-support-an-optional-photo-per-memory-allow-users-to-upload-an-image-in-the-frontend-and-store-retrieve-it-via-the-backend-with-clear-size-type-limits",
+      "featureTitle": "Support an optional photo per memory: allow users to upload an image in the frontend and store/retrieve it via the backend with clear size/type limits.",
+      "files": [
+        "frontend/src/components/memories/MemoryCard.tsx",
+        "frontend/src/components/memories/MemoryDetail.tsx",
+        "frontend/src/components/memories/MemoryForm.tsx",
+        "frontend/src/hooks/useMemories.ts",
+        "frontend/src/lib/photo.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-frontend-ux-for-creating-viewing-and-organizing-memories-timeline-gallery-list-memory-detail-view-and-an-add-memory-form",
+      "featureTitle": "Build a frontend UX for creating, viewing, and organizing memories: timeline/gallery list, memory detail view, and an ‘Add Memory’ form.",
+      "files": [
+        "frontend/src/components/memories/MemoriesLayout.tsx",
+        "frontend/src/components/memories/MemoriesPage.tsx",
+        "frontend/src/components/memories/MemoryDetail.tsx",
+        "frontend/src/components/memories/MemoryForm.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-define-and-apply-a-coherent-visual-theme-appropriate-for-a-family-memories-product-using-tailwind-shadcn-components-and-enforce-it-consistently-across-all-pages",
+      "featureTitle": "Define and apply a coherent visual theme appropriate for a family memories product, using Tailwind + shadcn components, and enforce it consistently across all pages.",
+      "files": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-basic-onboarding-ux-around-authentication-a-landing-state-for-signed-out-users-and-a-clear-call-to-action-to-sign-in",
+      "featureTitle": "Add basic onboarding UX around authentication: a landing state for signed-out users and a clear call-to-action to sign in.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/components/Landing.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-minimal-safety-and-moderation-controls-allow-authors-to-edit-delete-their-own-memories-and-prevent-unauthenticated-writes",
+      "featureTitle": "Provide minimal safety and moderation controls: allow authors to edit/delete their own memories and prevent unauthenticated writes.",
+      "files": [
+        "frontend/src/components/memories/MemoriesPage.tsx",
+        "frontend/src/components/memories/MemoryDetail.tsx",
+        "frontend/src/hooks/useMemories.ts"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-brand-assets-and-display-them-in-the-ui-placed-under-frontend-public-assets-generated-without-routing-these-assets-through-the-backend",
+      "featureTitle": "Add generated static brand assets and display them in the UI (placed under frontend/public/assets/generated), without routing these assets through the backend.",
+      "files": [
+        "frontend/src/components/AppHeader.tsx",
+        "frontend/src/components/Landing.tsx"
+      ],
+      "components": [
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
